@@ -6,5 +6,13 @@
 # find current contact information at www.suse.com.
 
 require "fileutils"
+require "yast/rake"
 
-FileUtils.cp_r("/.", File.join(destdir, "/usr/share/agama-playwright"))
+Rake::Task["install"].clear
+task :install do
+    destdir = ENV["DESTDIR"] || "/"
+
+    puts "Installing the integration tests..."
+    FileUtils.mkdir_p(File.join(destdir, "/usr/share/e2e-agama-playwright"))
+    FileUtils.cp_r(".", File.join(destdir, "/usr/share/e2e-agama-playwright"))
+end
