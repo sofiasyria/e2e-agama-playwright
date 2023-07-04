@@ -86,6 +86,7 @@ test.describe("The Installer", () => {
         await expect(page.getByText("Installation device")).toBeVisible({timeout: minute / 2});
       }
       await page.screenshot({ path: "screenshots/storage-page.png" });
+      await page.getByRole('button', { name: 'Back' }).click();
     });
 
     // confirm the installation only when explicitly set via the environment
