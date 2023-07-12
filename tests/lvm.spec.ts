@@ -10,11 +10,12 @@ test('Use logical volume management (LVM) as storage device for installation', a
       await page.getByRole("button", { name: "Select" }).click();
   });
   await page.getByRole('link', { name: 'Storage' }).click();
-  test.setTimeout(10 * minute);
+
   //Storage page
   const storagePage = new StoragePage(page);
   await storagePage.useLVM();
-  await storagePage.backToMainpage();
+  await storagePage.back();
+
   //Users page: add user 
   await expect(page.getByText("SUSE ALP Micro")).toBeVisible({timeout: 2 * minute});
   await page.getByRole('link', { name: 'Users' }).click();
@@ -30,8 +31,8 @@ test('Use logical volume management (LVM) as storage device for installation', a
   await page.getByLabel('Password confirmation').fill('nots3cr3t');
   await page.getByRole('button', { name: 'Confirm', exact: true }).click();
   //Users page: set root password 
-  await page.getByRole('row', { name: 'Password Not set Actions' }).getByRole('button', { name: 'Actions' }).click();
-  await page.getByRole('menuitem', { name: 'Set' }).click();
+  await page.getByRole('button', { name: 'Set a password' }).click();
+  await page.getByRole('textbox', { name: 'User password', exact: true }).click();
   await page.getByRole('textbox', { name: 'User password', exact: true }).fill('linux');
   await page.getByLabel('Password confirmation').click();
   await page.getByLabel('Password confirmation').fill('linux');
