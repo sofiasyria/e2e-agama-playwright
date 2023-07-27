@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { StoragePage } from './pages/storage-page';
+import { MainPage } from '../pages/main-page';
 import { EncryptionPasswordPopup, encryptionPasswordPopup } from './pages/encryption-password-popup';
 import { mainPagePath } from "../lib/installer";
 import { UsersPage } from '../pages/users-page';
@@ -13,8 +14,8 @@ test.describe('The main page', () => {
     });
 
     test('Full-disk encryption', async ({ page }) => {
-
-        await page.getByRole('link', { name: 'Storage' }).click();
+        const mainPage = new MainPage(page);
+        await mainPage.accessStorage();
 
         const storagePage = new StoragePage(page);
         await storagePage.useEncryption();
@@ -27,8 +28,8 @@ test.describe('The main page', () => {
         await storagePage.validateEncryptionIsUsed();
         await storagePage.back();
 
-        await expect(page.getByText("SUSE ALP Dolomite")).toBeVisible({ timeout: 2 * minute });
-        await page.getByRole('link', { name: 'Users' }).click();
+        await expect(page.getByText(process.env.PRODUCTNAME)).toBeVisible({ timeout: 2 * minute });
+        await mainPage.accessUsers();
 
         const usersPage = new UsersPage(page);
         await usersPage.expectNoUserDefined();
@@ -49,9 +50,8 @@ test.describe('The main page', () => {
         await test.step("Run installation", async () => {
             test.setTimeout(30 * minute);
             // start the installation
-            await expect(page.getByText("SUSE ALP Dolomite")).toBeVisible({ timeout: 2 * minute });
             await expect(page.getByText("Installation will take")).toBeVisible({ timeout: 2 * minute });
-            await page.getByRole("button", { name: "Install", exact: true }).click();
+            await mainPage.install();
             await expect(page.getByText("Confirm Installation")).toBeVisible({ timeout: 2 * minute });
             await page.getByRole("button", { name: "Continue" }).click();
             // wait for the package installation progress
