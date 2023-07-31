@@ -65,10 +65,17 @@ test.describe("The Installer", () => {
         await page.screenshot({ path: "screenshots/users-page.png" });
         // click on the "Set a password" button
         await page.getByRole("button", { name: "Set a password" }).click();
-        await page.locator("#password").fill("linux");
-        await page.locator("#passwordConfirmation").fill("linux");
+        await page.locator("#password").fill("nots3cr3t");
+        await page.locator("#passwordConfirmation").fill("nots3cr3t");
         await page.locator('button[type="submit"]').click();
-        await page.getByText("Back").click();
+	// click on the "Define a user now" button
+        await page.getByRole("button", { name: "Define a user now" }).click();
+        await page.locator("#userFullName").fill("Bernhard M. Wiedemann");
+        await page.locator("#userName").fill("bernhard");
+        await page.locator("#password").fill("nots3cr3t");
+        await page.locator("#passwordConfirmation").fill("nots3cr3t");
+        await page.locator('button[type="submit"]').click();
+	await page.getByText("Back").click();
       });
     }
 
