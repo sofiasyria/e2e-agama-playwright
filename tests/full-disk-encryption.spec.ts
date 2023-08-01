@@ -14,7 +14,7 @@ test.describe('The main page', () => {
 
     test('Full-disk encryption', async ({ page }) => {
         await test.step("Select the product", async () => {
-            await page.getByLabel('SUSE ALP Server').check();
+            await page.getByLabel('SUSE ALP Dolomite').check();
             await page.getByRole("button", { name: "Select" }).click();
         });
 
@@ -31,7 +31,7 @@ test.describe('The main page', () => {
         await storagePage.validateEncryptionIsUsed();
         await storagePage.back();
 
-        await expect(page.getByText("SUSE ALP Server")).toBeVisible({ timeout: 2 * minute });
+        await expect(page.getByText("SUSE ALP Dolomite")).toBeVisible({ timeout: 2 * minute });
         await page.getByRole('link', { name: 'Users' }).click();
 
         const usersPage = new UsersPage(page);
@@ -53,7 +53,7 @@ test.describe('The main page', () => {
         await test.step("Run installation", async () => {
             test.setTimeout(30 * minute);
             // start the installation
-            await expect(page.getByText("SUSE ALP Server")).toBeVisible({ timeout: 2 * minute });
+            await expect(page.getByText("SUSE ALP Dolomite")).toBeVisible({ timeout: 2 * minute });
             await expect(page.getByText("Installation will take")).toBeVisible({ timeout: 2 * minute });
             await page.getByRole("button", { name: "Install", exact: true }).click();
             await expect(page.getByText("Confirm Installation")).toBeVisible({ timeout: 2 * minute });

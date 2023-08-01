@@ -9,7 +9,7 @@ const minute = 60 * 1000;
 test('Use logical volume management (LVM) as storage device for installation', async ({ page }) => {
     await page.goto(mainPagePath());
     await test.step("Select the product", async () => {
-        await page.getByLabel('SUSE ALP Micro').check();
+        await page.getByLabel('SUSE ALP Dolomite').check();
         await page.getByRole("button", { name: "Select" }).click();
     });
     await page.getByRole('link', { name: 'Storage' }).click();
