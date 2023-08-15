@@ -70,3 +70,4 @@ test.describe('The main page', () => {
             }
         });
     });
+});
