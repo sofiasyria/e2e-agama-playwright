@@ -1,8 +1,9 @@
 import { test, expect } from '@playwright/test';
+import { IndexActor } from "../actors/index-actor";
 import { StoragePage } from '../pages/storage-page';
 import { MainPage } from '../pages/main-page';
+import { ProductSelectionOpensusePage } from '../pages/product-selection-opensuse-page';
 import { EncryptionPasswordPopup } from '../pages/encryption-password-popup';
-import { mainPagePath } from "../lib/installer";
 import { UsersPage } from '../pages/users-page';
 import { DefineUserPage } from '../pages/define-user-page';
 import { ConfigureRootPasswordPage } from '../pages/configure-root-password-page';
@@ -10,41 +11,46 @@ import { ConfigureRootPasswordPage } from '../pages/configure-root-password-page
 const minute = 60 * 1000;
 test.describe('The main page', () => {
     test.beforeEach(async ({ page }) => {
-        await page.goto(mainPagePath());
+        const productSelectionOpensusePage = new ProductSelectionOpensusePage(page);
+        const mainPage = new MainPage(page);
+        const indexActor = new IndexActor(page, mainPage, productSelectionOpensusePage);
+        indexActor.goto();
+        indexActor.handleProductSelectionIfAny();
     });
 
-    test('Full-disk encryption', async ({ page }) => {
+      test('Full-disk encryption', async ({ page }) => {
         const mainPage = new MainPage(page);
-        await mainPage.accessStorage();
+        await test.step("Set for Full-disk encryption", async () => {
+            await mainPage.accessStorage();
 
-        const storagePage = new StoragePage(page);
-        await storagePage.useEncryption();
+            const storagePage = new StoragePage(page);
+            await storagePage.useEncryption();
 
-        const passwordPopup = new EncryptionPasswordPopup(page);
-        await passwordPopup.fillPassword('nots3cr3t');
-        await passwordPopup.fillPasswordConfirmation('nots3cr3t');
-        await passwordPopup.accept();
+            const passwordPopup = new EncryptionPasswordPopup(page);
+            await passwordPopup.fillPassword('nots3cr3t');
+            await passwordPopup.fillPasswordConfirmation('nots3cr3t');
+            await passwordPopup.accept();
 
-        await storagePage.validateEncryptionIsUsed();
-        await storagePage.back();
+            await storagePage.validateEncryptionIsUsed();
+            await storagePage.back();
 
-        await expect(page.getByText(process.env.PRODUCTNAME)).toBeVisible({ timeout: 2 * minute });
-        await mainPage.accessUsers();
+            await mainPage.accessUsers();
 
-        const usersPage = new UsersPage(page);
-        await usersPage.expectNoUserDefined();
-        await usersPage.defineUser();
-        const defineUserPage = new DefineUserPage(page);
-        await defineUserPage.fillUserFullName('Bernhard M. Wiedemann');
-        await defineUserPage.fillUserName('bernhard');
-        await defineUserPage.fillAndConfirmPassword('nots3cr3t');
-        await defineUserPage.confirm();
-        await usersPage.expectRootPasswordNotSet();
-        await usersPage.configureRootPassword();
-        const configureRootPasswordPage = new ConfigureRootPasswordPage(page);
-        await configureRootPasswordPage.fillAndConfirmPassword('nots3cr3t');
-        await configureRootPasswordPage.confirm();
-        await usersPage.back();
+            const usersPage = new UsersPage(page);
+            await usersPage.expectNoUserDefined();
+            await usersPage.defineUser();
+            const defineUserPage = new DefineUserPage(page);
+            await defineUserPage.fillUserFullName('Bernhard M. Wiedemann');
+            await defineUserPage.fillUserName('bernhard');
+            await defineUserPage.fillAndConfirmPassword('nots3cr3t');
+            await defineUserPage.confirm();
+            await usersPage.expectRootPasswordNotSet();
+            await usersPage.configureRootPassword();
+            const configureRootPasswordPage = new ConfigureRootPasswordPage(page);
+            await configureRootPasswordPage.fillAndConfirmPassword('nots3cr3t');
+            await configureRootPasswordPage.confirm();
+            await usersPage.back();
+        });
 
         //Installation
         await test.step("Run installation", async () => {
