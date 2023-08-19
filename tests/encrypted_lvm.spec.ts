@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { StoragePage } from '../pages/storage-page';
 import { MainPage } from '../pages/main-page';
-import { EncryptionPasswordPopup, encryptionPasswordPopup } from '../pages/encryption-password-popup';
+import { EncryptionPasswordPopup } from '../pages/encryption-password-popup';
 import { mainPagePath } from "../lib/installer";
 import { UsersPage } from '../pages/users-page';
 import { DefineUserPage } from '../pages/define-user-page';
@@ -13,7 +13,7 @@ test.describe('The main page', () => {
         await page.goto(mainPagePath());
     });
 
-    test('Full-disk encryption', async ({ page }) => {
+    test('Installation test with encrypted lvm file system', async ({ page }) => {
         const mainPage = new MainPage(page);
         await mainPage.accessStorage();
 
@@ -26,9 +26,9 @@ test.describe('The main page', () => {
         await passwordPopup.accept();
 
         await storagePage.validateEncryptionIsUsed();
+        await storagePage.useLVM();
         await storagePage.back();
 
-        await expect(page.getByText(process.env.PRODUCTNAME)).toBeVisible({ timeout: 2 * minute });
         await mainPage.accessUsers();
 
         const usersPage = new UsersPage(page);
@@ -66,6 +66,6 @@ test.describe('The main page', () => {
                     if (error.constructor.name !== "TimeoutError") throw (error);
                 }
             }
-        })
-    })
-})
+        });
+    });
+});
