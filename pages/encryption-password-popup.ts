@@ -31,4 +31,3 @@ export class EncryptionPasswordPopup {
         await this.cancelButton.click();
     }
 }
-
