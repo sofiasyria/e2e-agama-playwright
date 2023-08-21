@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { StoragePage } from '../pages/storage-page';
 import { MainPage } from '../pages/main-page';
-import { EncryptionPasswordPopup, encryptionPasswordPopup } from '../pages/encryption-password-popup';
+import { EncryptionPasswordPopup } from '../pages/encryption-password-popup';
 import { mainPagePath } from "../lib/installer";
 import { UsersPage } from '../pages/users-page';
 import { DefineUserPage } from '../pages/define-user-page';
