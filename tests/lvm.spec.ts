@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
-import { mainPagePath } from "../lib/installer";
+import { IndexActor } from "../actors/index-actor";
+import { ProductSelectionOpensusePage } from '../pages/product-selection-opensuse-page';
 import { MainPage } from '../pages/main-page';
 import { StoragePage } from '../pages/storage-page';
 import { UsersPage } from '../pages/users-page';
@@ -7,34 +8,43 @@ import { DefineUserPage } from '../pages/define-user-page';
 import { ConfigureRootPasswordPage } from '../pages/configure-root-password-page';
 
 const minute = 60 * 1000;
-test('Use logical volume management (LVM) as storage device for installation', async ({ page }) => {
-    await page.goto(mainPagePath());
-    const mainPage = new MainPage(page);
-    await mainPage.accessStorage();
+test.describe('The main page', () => {
+    test.beforeEach(async ({ page }) => {
+        const productSelectionPage = new ProductSelectionOpensusePage(page);
+        const mainPage = new MainPage(page);
+        const indexActor = new IndexActor(page, mainPage, productSelectionPage);
+        indexActor.goto();
+        indexActor.handleProductSelectionIfAny();
+    });
 
-    const storagePage = new StoragePage(page);
-    await storagePage.useLVM();
-    await storagePage.back();
+      test("Use logical volume management (LVM) as storage device for installation", async ({ page }) => {
+        const mainPage = new MainPage(page);
+        await test.step("Set LVM and Users", async () => {
+            await mainPage.accessStorage();
 
-    await expect(page.getByText(process.env.PRODUCTNAME)).toBeVisible({ timeout: 2 * minute });
-    await mainPage.accessUsers();
+            const storagePage = new StoragePage(page);
+            await storagePage.useLVM();
+            await storagePage.back();
 
-    const usersPage = new UsersPage(page);
-    await usersPage.expectNoUserDefined();
-    await usersPage.defineUser();
-    const defineUserPage = new DefineUserPage(page);
-    await defineUserPage.fillUserFullName('Bernhard M. Wiedemann');
-    await defineUserPage.fillUserName('bernhard');
-    await defineUserPage.fillAndConfirmPassword('nots3cr3t');
-    await defineUserPage.confirm();
-    await usersPage.expectRootPasswordNotSet();
-    await usersPage.configureRootPassword();
-    const configureRootPasswordPage = new ConfigureRootPasswordPage(page);
-    await configureRootPasswordPage.fillAndConfirmPassword('nots3cr3t');
-    await configureRootPasswordPage.confirm();
-    await usersPage.back();
+            await mainPage.accessUsers();
 
-    await test.step("Run installation", async () => {
+            const usersPage = new UsersPage(page);
+            await usersPage.expectNoUserDefined();
+            await usersPage.defineUser();
+            const defineUserPage = new DefineUserPage(page);
+            await defineUserPage.fillUserFullName('Bernhard M. Wiedemann');
+            await defineUserPage.fillUserName('bernhard');
+            await defineUserPage.fillAndConfirmPassword('nots3cr3t');
+            await defineUserPage.confirm();
+            await usersPage.expectRootPasswordNotSet();
+            await usersPage.configureRootPassword();
+            const configureRootPasswordPage = new ConfigureRootPasswordPage(page);
+            await configureRootPasswordPage.fillAndConfirmPassword('nots3cr3t');
+            await configureRootPasswordPage.confirm();
+            await usersPage.back();
+        });
+
+      await test.step("Run installation", async () => {
         test.setTimeout(30 * minute);
         // start the installation
         await expect(page.getByText("Installation will take")).toBeVisible({ timeout: 2 * minute });
@@ -53,5 +63,6 @@ test('Use logical volume management (LVM) as storage device for installation', a
                 if (error.constructor.name !== "TimeoutError") throw (error);
             }
         }
+      });
     });
 });
