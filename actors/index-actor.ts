@@ -5,12 +5,12 @@ import { MainPage } from '../pages/main-page';
 export class IndexActor {
   readonly page: Page;
   readonly mainPage: MainPage;
-  readonly productSelectionPage: ProductSelectionOpensusePage;
+  readonly productSelectionOpensusePage: ProductSelectionOpensusePage;
 
-  constructor(page: Page, mainPage: MainPage, productSelectionPage: ProductSelectionOpensusePage) {
+  constructor(page: Page, mainPage: MainPage, productSelectionOpensusePage: ProductSelectionOpensusePage) {
     this.page = page;
     this.mainPage = mainPage;
-    this.productSelectionPage = productSelectionPage; 
+    this.productSelectionOpensusePage = productSelectionOpensusePage; 
   }
 
   async goto() {
@@ -26,14 +26,14 @@ export class IndexActor {
 
     // check for multiple texts in parallel, avoid waiting for timeouts
     let action = await Promise.any([
-      this.productSelectionPage.productSelectionText.waitFor().then(() => actions.setProduct),
+      this.productSelectionOpensusePage.productSelectionText.waitFor().then(() => actions.setProduct),
       this.mainPage.installButton.waitFor().then(() => actions.setInstall),
     ]);
 
     // optional product selection
     if (action === actions.setProduct) {
-        await this.productSelectionPage.chooseOpensuseTumbleweed();
-        await this.productSelectionPage.select();
+        await this.productSelectionOpensusePage.chooseOpensuseTumbleweed();
+        await this.productSelectionOpensusePage.select();
     }
   }
 }
