@@ -1,12 +1,13 @@
-import { ProductSelectionPage } from '../pages/product-selection-opensuse-page';
+import { type Page } from '@playwright/test';
+import { ProductSelectionOpensusePage } from '../pages/product-selection-opensuse-page';
 import { MainPage } from '../pages/main-page';
 
 export class IndexActor {
   readonly page: Page;
   readonly mainPage: MainPage;
-  readonly productSelectionPage: ProductSelectionPage;
+  readonly productSelectionPage: ProductSelectionOpensusePage;
 
-  constructor(page: Page, mainPage: MainPage, productSelectionPage: ProductSelectionPage) {
+  constructor(page: Page, mainPage: MainPage, productSelectionPage: ProductSelectionOpensusePage) {
     this.page = page;
     this.mainPage = mainPage;
     this.productSelectionPage = productSelectionPage; 
