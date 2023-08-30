@@ -1,12 +1,10 @@
 import { test, expect } from '@playwright/test';
-import { IndexActor } from "../actors/index-actor";
+import { IndexActor } from '../actors/index-actor';
 import { StoragePage } from '../pages/storage-page';
 import { MainPage } from '../pages/main-page';
 import { ProductSelectionOpensusePage } from '../pages/product-selection-opensuse-page';
 import { EncryptionPasswordPopup } from '../pages/encryption-password-popup';
-import { UsersPage } from '../pages/users-page';
-import { DefineUserPage } from '../pages/define-user-page';
-import { ConfigureRootPasswordPage } from '../pages/configure-root-password-page';
+import { UsersActor } from '..actors/users-actor';
 
 const minute = 60 * 1000;
 test.describe('The main page', () => {
@@ -34,22 +32,7 @@ test.describe('The main page', () => {
             await storagePage.validateEncryptionIsUsed();
             await storagePage.back();
 
-            await mainPage.accessUsers();
-
-            const usersPage = new UsersPage(page);
-            await usersPage.expectNoUserDefined();
-            await usersPage.defineUser();
-            const defineUserPage = new DefineUserPage(page);
-            await defineUserPage.fillUserFullName('Bernhard M. Wiedemann');
-            await defineUserPage.fillUserName('bernhard');
-            await defineUserPage.fillAndConfirmPassword('nots3cr3t');
-            await defineUserPage.confirm();
-            await usersPage.expectRootPasswordNotSet();
-            await usersPage.configureRootPassword();
-            const configureRootPasswordPage = new ConfigureRootPasswordPage(page);
-            await configureRootPasswordPage.fillAndConfirmPassword('nots3cr3t');
-            await configureRootPasswordPage.confirm();
-            await usersPage.back();
+	    await usersActor.createUserAndDefineRootPassword();
         });
 
         //Installation
