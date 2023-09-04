@@ -4,7 +4,7 @@ import { StoragePage } from '../pages/storage-page';
 import { MainPage } from '../pages/main-page';
 import { ProductSelectionOpensusePage } from '../pages/product-selection-opensuse-page';
 import { EncryptionPasswordPopup } from '../pages/encryption-password-popup';
-import { UsersActor } from '..actors/users-actor';
+import { UsersActor } from '../actors/users-actor';
 
 const minute = 60 * 1000;
 test.describe('The main page', () => {
