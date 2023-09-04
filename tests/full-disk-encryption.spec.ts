@@ -14,6 +14,8 @@ test.describe('The main page', () => {
         const indexActor = new IndexActor(page, mainPage, productSelectionOpensusePage);
         indexActor.goto();
         indexActor.handleProductSelectionIfAny();
+	const usersPage = new UsersPage(page);
+	const defineUsersPage = new DefineUsersPage(page);
 	const usersActor = new UsersActor(page, mainPage, usersPage, defineUserPage, configureRootPasswordPage);
 	usersActor.createUserAndDefineRootPassword();
     });
