@@ -18,9 +18,9 @@ export class UsersActor {
         configureRootPasswordPage: ConfigureRootPasswordPage) {
         this.page = page;
         this.mainPage = mainPage;
-        this.usersPage: UsersPage;
-        this.defineUserPage: DefineUserPage;
-        this.configureRootPasswordPage: ConfigureRootPasswordPage;
+        this.usersPage = UsersPage;
+        this.defineUserPage = DefineUserPage;
+        this.configureRootPasswordPage = ConfigureRootPasswordPage;
     }
 
     async createUserAndDefineRootPassword() {
