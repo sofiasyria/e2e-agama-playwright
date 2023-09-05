@@ -8,11 +8,7 @@ export class UsersActor extends UsersPage {
 
     constructor(page: Page,
         mainPage: MainPage) {
-        super.page = page;
-        page.mainPage = mainPage;
-        page.usersPage = UsersPage;
-        page.defineUserPage = DefineUserPage;
-        page.configureRootPasswordPage = ConfigureRootPasswordPage;
+        super(page: Page);
     }
 
     async createUserAndDefineRootPassword() {
