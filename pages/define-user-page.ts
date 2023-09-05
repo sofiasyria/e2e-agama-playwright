@@ -9,9 +9,9 @@ export class DefineUserPage {
 
     constructor(page: Page) {
         this.page = page;
-        this.userFullName = page.getByRole('textbox', { name: 'User fullname' });
-        this.userName = page.getByRole('textbox', { name: 'Username' });
-        this.password = page.getByRole('textbox', { name: 'User password', exact: true });
+        this.userFullName = page.getByLabel('User full name');
+        this.userName = page.getByLabel('Username');
+        this.password = page.getByLabel('User password', { exact: true });
         this.confirmPassword = page.getByLabel('Password confirmation');
         this.confirmButton = page.getByRole('button', { name: 'Confirm' });
     }
