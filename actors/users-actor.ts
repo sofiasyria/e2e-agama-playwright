@@ -8,25 +8,25 @@ export class UsersActor extends UsersPage {
 
     constructor(page: Page,
         mainPage: MainPage) {
-        this.page = page;
-        this.mainPage = mainPage;
-        this.usersPage = UsersPage;
-        this.defineUserPage = DefineUserPage;
-        this.configureRootPasswordPage = ConfigureRootPasswordPage;
+        super.page = page;
+        page.mainPage = mainPage;
+        page.usersPage = UsersPage;
+        page.defineUserPage = DefineUserPage;
+        page.configureRootPasswordPage = ConfigureRootPasswordPage;
     }
 
     async createUserAndDefineRootPassword() {
-        await this.mainPage.accessUsers();
-        await this.usersPage.expectNoUserDefined();
-        await this.usersPage.defineUser();
-        await this.defineUserPage.fillUserFullName('Bernhard M. Wiedemann');
-        await this.defineUserPage.fillUserName('bernhard');
-        await this.defineUserPage.fillAndConfirmPassword('nots3cr3t');
-        await this.defineUserPage.confirm();
-        await this.usersPage.expectRootPasswordNotSet();
-        await this.usersPage.configureRootPassword();
-        await this.configureRootPasswordPage.fillAndConfirmPassword('nots3cr3t');
-        await this.configureRootPasswordPage.confirm();
-        await this.usersPage.back();
+        await page.mainPage.accessUsers();
+        await page.usersPage.expectNoUserDefined();
+        await page.usersPage.defineUser();
+        await page.defineUserPage.fillUserFullName('Bernhard M. Wiedemann');
+        await page.defineUserPage.fillUserName('bernhard');
+        await page.defineUserPage.fillAndConfirmPassword('nots3cr3t');
+        await page.defineUserPage.confirm();
+        await page.usersPage.expectRootPasswordNotSet();
+        await page.usersPage.configureRootPassword();
+        await page.configureRootPasswordPage.fillAndConfirmPassword('nots3cr3t');
+        await page.configureRootPasswordPage.confirm();
+        await page.usersPage.back();
     }
 }
