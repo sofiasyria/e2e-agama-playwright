@@ -20,30 +20,32 @@ test.describe('The main page', () => {
 
     test('Add /home file system', async ({ page }) => {
         const mainPage = new MainPage(page);
-        await mainPage.accessStorage();
+        await test.step("Start to add home file system", async () => {
+            await mainPage.accessStorage();
         
-        const storagePage = new StoragePage(page);
-        await storagePage.accessAddFileSystem();
-        const addFileSystemPage = new AddFileSystemPage(page);
-        await addFileSystemPage.accept();
-        await storagePage.back();
+            const storagePage = new StoragePage(page);
+            await storagePage.accessAddFileSystem();
+            const addFileSystemPage = new AddFileSystemPage(page);
+            await addFileSystemPage.accept();
+            await storagePage.back();
       
-        await mainPage.accessUsers();
+            await mainPage.accessUsers();
       
-        const usersPage = new UsersPage(page);
-        await usersPage.expectNoUserDefined();
-        await usersPage.defineUser();
-        const defineUserPage = new DefineUserPage(page);
-        await defineUserPage.fillUserFullName('Bernhard M. Wiedemann');
-        await defineUserPage.fillUserName('bernhard');
-        await defineUserPage.fillAndConfirmPassword('nots3cr3t');
-        await defineUserPage.confirm();
-        await usersPage.expectRootPasswordNotSet();
-        await usersPage.configureRootPassword();
-        const configureRootPasswordPage = new ConfigureRootPasswordPage(page);
-        await configureRootPasswordPage.fillAndConfirmPassword('nots3cr3t');
-        await configureRootPasswordPage.confirm();
-        await usersPage.back();
+            const usersPage = new UsersPage(page);
+            await usersPage.expectNoUserDefined();
+            await usersPage.defineUser();
+            const defineUserPage = new DefineUserPage(page);
+            await defineUserPage.fillUserFullName('Bernhard M. Wiedemann');
+            await defineUserPage.fillUserName('bernhard');
+            await defineUserPage.fillAndConfirmPassword('nots3cr3t');
+            await defineUserPage.confirm();
+            await usersPage.expectRootPasswordNotSet();
+            await usersPage.configureRootPassword();
+            const configureRootPasswordPage = new ConfigureRootPasswordPage(page);
+            await configureRootPasswordPage.fillAndConfirmPassword('nots3cr3t');
+            await configureRootPasswordPage.confirm();
+            await usersPage.back();
+        });
     
         await test.step("Run installation", async () => {
             test.setTimeout(30 * minute);
