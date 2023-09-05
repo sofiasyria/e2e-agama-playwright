@@ -4,9 +4,6 @@ import { StoragePage } from '../pages/storage-page';
 import { MainPage } from '../pages/main-page';
 import { ProductSelectionOpensusePage } from '../pages/product-selection-opensuse-page';
 import { EncryptionPasswordPopup } from '../pages/encryption-password-popup';
-import { UsersPage } from '../pages/users-page';
-import { DefineUserPage } from '../pages/define-user-page';
-import { ConfigureRootPasswordPage } from '../pages/configure-root-password-page';
 import { UsersActor } from '../actors/users-actor';
 
 const minute = 60 * 1000;
@@ -17,9 +14,6 @@ test.describe('The main page', () => {
         const indexActor = new IndexActor(page, mainPage, productSelectionOpensusePage);
         indexActor.goto();
         indexActor.handleProductSelectionIfAny();
-        const defineUserPage = new DefineUserPage(page);
-        const configureRootPasswordPage = new ConfigureRootPasswordPage(page);
-	const usersPage = UsersPage(page);
 	const usersActor = new UsersActor(page, mainPage);
 	usersActor.createUserAndDefineRootPassword();
     });

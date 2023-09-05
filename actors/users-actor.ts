@@ -1,21 +1,13 @@
 import { expect, type Page } from '@playwright/test';
 import { MainPage } from '../pages/main-page';
 import { UsersPage } from '../pages/users-page';
-import { DefineUserPage } from '../pages/define-user-page';
-import { ConfigureRootPasswordPage } from '../pages/configure-root-password-page';
 
-export class UsersActor {
+export class UsersActor extends UsersPage {
     readonly page: Page;
     readonly mainPage: MainPage;
-    readonly usersPage: UsersPage; 
-    readonly defineUserPage: DefineUserPage;
-    readonly configureRootPasswordPage: ConfigureRootPasswordPage;
 
     constructor(page: Page,
-        mainPage: MainPage,
-	usersPage: UsersPage,
-        defineUserPage: DefineUserPage,
-        configureRootPasswordPage: ConfigureRootPasswordPage) {
+        mainPage: MainPage) {
         this.page = page;
         this.mainPage = mainPage;
         this.usersPage = UsersPage;
