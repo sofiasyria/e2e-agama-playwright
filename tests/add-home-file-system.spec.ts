@@ -1,12 +1,10 @@
 import { test, expect } from '@playwright/test';
 import { AddFileSystemPage } from '../pages/add-file-system-page';
 import { IndexActor } from "../actors/index-actor";
+import { UserActor } from "../actors/user-actor";
 import { MainPage } from '../pages/main-page';
 import { ProductSelectionOpensusePage } from '../pages/product-selection-opensuse-page';
 import { StoragePage } from '../pages/storage-page';
-import { UsersPage } from '../pages/users-page';
-import { DefineUserPage } from '../pages/define-user-page';
-import { ConfigureRootPasswordPage } from '../pages/configure-root-password-page';
 
 const minute = 60 * 1000;
 test.describe('The main page', () => {
@@ -29,22 +27,11 @@ test.describe('The main page', () => {
             await addFileSystemPage.accept();
             await storagePage.back();
       
+        });
+
+        await test.step("set mandatory user and root password", async () => {
             await mainPage.accessUsers();
-      
-            const usersPage = new UsersPage(page);
-            await usersPage.expectNoUserDefined();
-            await usersPage.defineUser();
-            const defineUserPage = new DefineUserPage(page);
-            await defineUserPage.fillUserFullName('Bernhard M. Wiedemann');
-            await defineUserPage.fillUserName('bernhard');
-            await defineUserPage.fillAndConfirmPassword('nots3cr3t');
-            await defineUserPage.confirm();
-            await usersPage.expectRootPasswordNotSet();
-            await usersPage.configureRootPassword();
-            const configureRootPasswordPage = new ConfigureRootPasswordPage(page);
-            await configureRootPasswordPage.fillAndConfirmPassword('nots3cr3t');
-            await configureRootPasswordPage.confirm();
-            await usersPage.back();
+            await (new UserActor(page)).handleUser();
         });
     
         await test.step("Run installation", async () => {

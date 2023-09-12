@@ -1,3 +1,5 @@
+import { type Locator, type Page } from '@playwright/test';
+
 export class ConfigureRootPasswordPage {
     readonly page: Page;
     readonly password: Locator;
