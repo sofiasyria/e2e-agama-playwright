@@ -9,12 +9,14 @@ export class StoragePage {
     readonly actionsAddFileSystemButton: Locator;
     readonly addFileSystemText: Locator;
     readonly swapPartitionText: Locator;
+    readonly installationDeviceLink: Locator;
 
     constructor(page: Page) {
         this.page = page;
         this.useEncryptionToggle = page.getByRole('checkbox', { name: 'Use encryption' });
         this.encryptionEnabled = page.getByRole('button', { name: 'Encryption settings' });
         this.useLVMToggle = page.locator('label').filter({ hasText: /Use logical volume management/ }).locator('span').first();
+        this.installationDeviceLink = page.getByRole('button', { name: /\/dev\/.d.\,\ [0-9]*\ .iB/ } );
         this.backButton = page.getByRole('button', { name: 'Back' });
         this.actionsAddFileSystemButton = page.getByRole('button', { name: 'Actions' }).first();
         this.addFileSystemText = page.getByText('Add file system', { exact: true });
@@ -40,8 +42,12 @@ export class StoragePage {
         await this.addFileSystemText.click();
     }
 
+    async accessInstallationDevice() {
+        await expect(this.installationDeviceLink).toBeVisible();
+        await this.installationDeviceLink.click();
+    }
+    
     async back() {
         await this.backButton.click();
     }
-
-  }
+}
