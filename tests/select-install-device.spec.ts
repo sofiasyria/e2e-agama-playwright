@@ -19,10 +19,9 @@ test.describe('The main page', () => {
 
     test('Installation on second available storage device', async ({ page }) => {
         const mainPage = new MainPage(page);
+        await mainPage.expectInstallationSize();
         await test.step("select second available device for installation", async () => {
             const storagePage = new StoragePage(page);
-            // Poo#137537 Workaround the device selection timeout issue.
-            await expect(page.getByText("Installation will take")).toBeVisible({ timeout: 2 * minute });
             const installationDevice = new InstallationDevicePage(page);
 
             await mainPage.accessStorage();

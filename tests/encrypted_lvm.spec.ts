@@ -19,6 +19,7 @@ test.describe('The main page', () => {
 
     test('Installation test with encrypted lvm file system', async ({ page }) => {
         const mainPage = new MainPage(page);
+        await mainPage.expectInstallationSize();
         await test.step("set encrypted lvm file system", async () => {
             await mainPage.accessStorage();
 
