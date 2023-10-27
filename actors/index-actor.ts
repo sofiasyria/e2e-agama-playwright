@@ -27,7 +27,7 @@ export class IndexActor {
     // check for multiple texts in parallel, avoid waiting for timeouts
     let action = await Promise.any([
       this.productSelectionOpensusePage.productSelectionText.waitFor().then(() => actions.setProduct),
-      this.mainPage.installButton.waitFor().then(() => actions.setInstall),
+      this.mainPage.noUserDefined.waitFor().then(() => actions.setInstall),
     ]);
 
     // optional product selection
