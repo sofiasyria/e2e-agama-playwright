@@ -10,8 +10,8 @@ export class ProductSelectionOpensusePage {
     constructor(page: Page) {
         this.page = page;
         this.productSelectionText = page.getByText('Product selection');
-        this.opensuseTumbleweedLabel = page.getByLabel('openSUSE Tumbleweed');
-        this.opensuseLeapLabel = page.getByLabel('openSUSE Leap 16.0');
+        this.opensuseTumbleweedLabel = page.locator('#Tumbleweed');
+        this.opensuseLeapLabel = page.locator('#Leap16');
         this.selectButton = page.getByRole('button', { name: 'Select' });
     }
 
