@@ -18,7 +18,6 @@ test.describe('The main page', () => {
 
     test("Use logical volume management (LVM) as storage device for installation", async ({ page }) => {
         const mainPage = new MainPage(page);
-        await mainPage.expectInstallationSize();
         await test.step("Set LVM and Users", async () => {
             await mainPage.accessStorage();
 

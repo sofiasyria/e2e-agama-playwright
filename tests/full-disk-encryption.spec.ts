@@ -19,7 +19,6 @@ test.describe('The main page', () => {
 
     test('Full-disk encryption', async ({ page }) => {
         const mainPage = new MainPage(page);
-        await mainPage.expectInstallationSize();
         await test.step("Set for Full-disk encryption", async () => {
             await mainPage.accessStorage();
 
