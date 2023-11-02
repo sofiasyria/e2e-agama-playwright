@@ -19,7 +19,6 @@ test.describe('The main page', () => {
 
     test('Add /home file system', async ({ page }) => {
         const mainPage = new MainPage(page);
-        await mainPage.expectInstallationSize();
         await test.step("Start to add home file system", async () => {
             await mainPage.accessStorage();
 

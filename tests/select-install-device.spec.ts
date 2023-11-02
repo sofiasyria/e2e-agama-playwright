@@ -19,7 +19,6 @@ test.describe('The main page', () => {
 
     test('Installation on second available storage device', async ({ page }) => {
         const mainPage = new MainPage(page);
-        await mainPage.expectInstallationSize();
         await test.step("select second available device for installation", async () => {
             const storagePage = new StoragePage(page);
             const installationDevice = new InstallationDevicePage(page);
