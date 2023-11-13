@@ -5,6 +5,7 @@ export class StoragePage {
     readonly useEncryptionToggle: Locator;
     readonly encryptionEnabled: Locator;
     readonly useLVMToggle: Locator;
+    readonly settingsLVMButton: Locator;
     readonly backButton: Locator;
     readonly actionsAddFileSystemButton: Locator;
     readonly addFileSystemText: Locator;
@@ -15,7 +16,8 @@ export class StoragePage {
         this.page = page;
         this.useEncryptionToggle = page.getByRole('checkbox', { name: 'Use encryption' });
         this.encryptionEnabled = page.getByRole('button', { name: 'Encryption settings' });
-        this.useLVMToggle = page.locator('label').filter({ hasText: /Use logical volume management/ }).locator('span').first();
+        this.useLVMToggle = page.locator('#lvm');
+        this.settingsLVMButton = page.locator('button[aria-label="LVM settings"]');
         this.installationDeviceLink = page.getByRole('button', { name: /\/dev\/.d.\,\ [0-9]*\ .iB/ } );
         this.backButton = page.getByRole('button', { name: 'Back' });
         this.actionsAddFileSystemButton = page.getByRole('button', { name: 'Actions' }).first();
@@ -32,7 +34,11 @@ export class StoragePage {
     }
 
     async useLVM() {
-        await this.useLVMToggle.click();
+        await this.useLVMToggle.check();
+    }
+
+    async settingsLVM() {
+        await this.settingsLVMButton.click();
     }
 
     async accessAddFileSystem() {

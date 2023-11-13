@@ -20,7 +20,7 @@ export class UsersPage {
     }
 
     async expectNoUserDefined() {
-        await expect(this.noUserDefinedText).toBeVisible(true);
+        await expect(this.noUserDefinedText).toBeVisible();
     }
 
     async defineUser() {
@@ -28,7 +28,7 @@ export class UsersPage {
     }
 
     async expectRootPasswordNotSet() {
-        await expect(this.rootPasswordNotSetText).toBeVisible(true);
+        await expect(this.rootPasswordNotSetText).toBeVisible();
     }
 
     async configureRootPassword() {
