@@ -1,0 +1,51 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  static-check:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Git Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Git Checkout PR
+        uses: actions/checkout@v4
+        with:
+          ref: ${{github.event.pull_request.head.ref}}
+          repository: ${{github.event.pull_request.head.repo.full_name}}
+          path: e2e-agama-playwright-pr
+          fetch-depth: 0
+
+      - name: Get modified files
+        id: changed-files
+        run: |
+          git config --global --add safe.directory '*'
+          git config --global user.email "github@opensuse.org"
+          git config --global user.name "CI Workflow"
+          cd e2e-agama-playwright-pr
+          git remote set-url origin 'https://github.com/jknphy/e2e-agama-playwright' 
+          git fetch origin main:main_or
+          git rebase main_or
+          CHANGED_FILES=$(git diff --diff-filter="ACMRTUX" --name-only origin/main | tr '\n' ' ')
+          echo $CHANGED_FILES
+          echo "files=${CHANGED_FILES}" >> $GITHUB_OUTPUT
+
+      - name: Install typescript-formatter with Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+      - run: npm install -g typescript-formatter
+
+      - name: Check typescript format
+        run: |
+           cd e2e-agama-playwright-pr
+           for file in ${{ steps.changed-files.outputs.files }}; do
+               echo ${file}
+               if [[ ${file} == *.ts ]]
+               then
+                   echo "Checking format of typescript file ${file}"
+                   tsfmt --no-vscode --verify ${file}
+               fi
+           done
