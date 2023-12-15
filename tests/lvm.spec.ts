@@ -5,9 +5,10 @@ import { ProductSelectionOpensusePage } from '../pages/product-selection-opensus
 import { MainPage } from '../pages/main-page';
 import { StoragePage } from '../pages/storage-page';
 import { InstallActor } from '../actors/install-actor';
+import { ImaginaryActor } from '../actors/imaginary-actor';
 
 const minute = 60 * 1000;
-         test.describe('The main page', () => {
+test.describe('The main page', () => {
     test.beforeEach(async ({ page }) => {
         const productSelectionPage = new ProductSelectionOpensusePage(page);
         const mainPage = new MainPage(page);
