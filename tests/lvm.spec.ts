@@ -7,7 +7,7 @@ import { StoragePage } from '../pages/storage-page';
 import { InstallActor } from '../actors/install-actor';
 
 const minute = 60 * 1000;
-test.describe('The main page', () => {
+         test.describe('The main page', () => {
     test.beforeEach(async ({ page }) => {
         const productSelectionPage = new ProductSelectionOpensusePage(page);
         const mainPage = new MainPage(page);
